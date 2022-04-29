@@ -1,0 +1,29 @@
+{
+  "name": "path-prompt",
+  "displayName": "path prompt",
+  "description": "提示路径，图片预览",
+  "version": "0.0.1",
+  "publisher": "",
+  "author": "",
+  "icon": "",
+  "engines": {
+    "vscode": "^1.49.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "index.js",
+  "contributes": {},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "path",
+    "path prompt"
+  ],
+  "license": "MIT"
+}
