@@ -1,9 +1,9 @@
-const vsc = require('vscode')
+const vscode = require('vscode')
 const { resolve, dirname, join } = require('path')
 const fs = require('fs')
 
-const FILE = vsc.CompletionItemKind.File
-const FOLDER = vsc.CompletionItemKind.Folder
+const FILE = vscode.CompletionItemKind.File
+const FOLDER = vscode.CompletionItemKind.Folder
 
 /**
  * [isdir 判断目标是否为目录]
@@ -53,10 +53,27 @@ function getPrefixTxt(line, idx) {
   return ''
 }
 
-function item(text, type, p) {
-  var _ = new vsc.CompletionItem(text, type)
-  _.range = new vsc.Range(p, p)
-  return _
+function famatePath(path) {
+  const isExtendedLengthPath = /^\\\\\?\\/.test(path);
+  const hasNonAscii = /[^\u0000-\u0080]+/.test(path); // eslint-disable-line no-control-regex
+
+  if (isExtendedLengthPath || hasNonAscii) {
+    return path;
+  }
+
+  return path.replace(/\\/g, '/');
+};
+
+function item(text, type, p, path) {
+  var CompletionItem = new vscode.CompletionItem(text, type)
+  CompletionItem.range = new vscode.Range(p, p)
+  // if (path.endsWith('.png')) {
+    // let str='e:/uupt.homeadmin.web/src/assets/404_images/404.png'
+    // let str=famatePath(path)
+    // console.log(str==='e:/uupt.homeadmin.web/src/assets/404_images/404_cloud.png')
+      let str2=`![image](${vscode.Uri.file(famatePath(path))}) `
+      CompletionItem.documentation = new vscode.MarkdownString(`${str2}`)
+  return CompletionItem
 }
 
 let options = {
@@ -140,9 +157,10 @@ class AutoPath {
     list = list
       .filter(it => it !== doc.fileName)
       .map(k => {
+        let path = k
         let t = options.isMiniApp ? FILE : isdir(k) ? FOLDER : FILE
         k = k.slice(currDirFixed.length)
-        return item(k, t, pos)
+        return item(k, t, pos, path)
       })
 
     if (list.length) {
@@ -153,9 +171,7 @@ class AutoPath {
 }
 
 function __init__() {
-  let folders = vsc.workspace.workspaceFolders
-
-  // console.log(folders)
+  let folders = vscode.workspace.workspaceFolders
 
   if (folders && folders.length) {
     options.workspace = folders[0].uri.fsPath
@@ -184,13 +200,13 @@ function __init__() {
 }
 
 exports.activate = function (ctx) {
-  console.log('激活成功')
+  console.log('启动成功')
   __init__()
 
   let ap = new AutoPath()
-  let auto = vsc.languages.registerCompletionItemProvider('*', ap, '"', "'", '/')
+  let auto = vscode.languages.registerCompletionItemProvider('*', ap, '"', "'", '/')
 
   ctx.subscriptions.push(auto)
 }
 
-exports.deactivate = function () {}
+exports.deactivate = function () { }
