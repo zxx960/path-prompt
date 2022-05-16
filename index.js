@@ -4,7 +4,7 @@ const fs = require('fs')
 
 const FILE = vscode.CompletionItemKind.File
 const FOLDER = vscode.CompletionItemKind.Folder
-
+const imaType = ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp', '.svg', '.ico']// 图片格式
 /**
  * [isdir 判断目标是否为目录]
  */
@@ -67,17 +67,18 @@ function famatePath(path) {
 function item(text, type, p, path) {
   var CompletionItem = new vscode.CompletionItem(text, type)
   CompletionItem.range = new vscode.Range(p, p)
-  // if (path.endsWith('.png')) {
-    // let str='e:/uupt.homeadmin.web/src/assets/404_images/404.png'
-    // let str=famatePath(path)
-    // console.log(str==='e:/uupt.homeadmin.web/src/assets/404_images/404_cloud.png')
-      let str2=`![image](${vscode.Uri.file(famatePath(path))}) `
-      CompletionItem.documentation = new vscode.MarkdownString(`${str2}`)
+  if (path) {
+    imaType.forEach(item => {
+      if (path.endsWith(item)) {
+        let image = `![image](${vscode.Uri.file(famatePath(path))}|width=200)`
+        CompletionItem.documentation = new vscode.MarkdownString(image)
+      }
+    })
+  }
   return CompletionItem
 }
 
 let options = {
-  isMiniApp: false, // 是否小程序
   workspace: resolve('./'),
   extendWorkspace: null // 额外的项目目录, 一般是 vue项目中的 src目录
 }
@@ -122,23 +123,9 @@ class AutoPath {
     if (inputTxt.startsWith('./') || inputTxt.startsWith('../')) {
       list.push(...ls(currDirFixed))
     } else {
-      // 小程序
-      if (options.isMiniApp) {
-        let conf = require(join(options.workspace, 'app.json'))
 
-        list = conf.pages.map(it => `/${it}`)
-
-        if (conf.subPackages && conf.subPackages.length) {
-          for (let it of conf.subPackages) {
-            list.push(...it.pages.map(p => '/' + it.root + p))
-          }
-        }
-
-        currDirFixed = inputTxt
-        list = list.filter(it => it.startsWith(inputTxt))
-      }
       // vue项目
-      else if (inputTxt.startsWith('@/') && options.extendWorkspace) {
+      if (inputTxt.startsWith('@/') && options.extendWorkspace) {
         currDirFixed = join(options.extendWorkspace, inputTxt.slice(2))
         list.push(...ls(currDirFixed))
       } else if (inputTxt.startsWith('~')) {
@@ -158,7 +145,7 @@ class AutoPath {
       .filter(it => it !== doc.fileName)
       .map(k => {
         let path = k
-        let t = options.isMiniApp ? FILE : isdir(k) ? FOLDER : FILE
+        let t = isdir(k) ? FOLDER : FILE
         k = k.slice(currDirFixed.length)
         return item(k, t, pos, path)
       })
@@ -178,14 +165,7 @@ function __init__() {
   }
 
   if (options.workspace) {
-    // 判断是否是小程序
-    if (isfile(join(options.workspace, 'app.json'))) {
-      let conf = require(join(options.workspace, 'app.json'))
-      if (conf.pages && conf.pages.length) {
-        options.isMiniApp = true
-        return
-      }
-    }
+
     // 简单判断是否是vue项目
     if (isfile(join(options.workspace, 'package.json'))) {
       let conf = require(join(options.workspace, 'package.json'))
@@ -200,12 +180,10 @@ function __init__() {
 }
 
 exports.activate = function (ctx) {
-  console.log('启动成功')
+  // console.log('启动成功')
   __init__()
-
   let ap = new AutoPath()
   let auto = vscode.languages.registerCompletionItemProvider('*', ap, '"', "'", '/')
-
   ctx.subscriptions.push(auto)
 }
 
