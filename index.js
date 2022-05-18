@@ -57,6 +57,18 @@ function famatePath(path) {
 function item(text, type, p, path) {
   let CompletionItem = new vscode.CompletionItem(text, type)
   CompletionItem.range = new vscode.Range(p, p)
+  if (isdir(path)) {  //如果是目录就自动打开目录
+    CompletionItem.command = {  
+      command: 'default:type',
+      title: 'triggerSuggest',
+      arguments: [
+        {
+          text: '/',
+        },
+      ],
+    };
+  }
+
   if (path) {
     imaType.forEach(item => {
       if (path.endsWith(item)) {
