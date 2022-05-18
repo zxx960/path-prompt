@@ -85,7 +85,7 @@ let mappings = vscode.workspace.getConfiguration('path-prompt').mappings
 let options = {
   workspace: rootPath,
   extendWorkspace: {
-    '@/': join(rootPath, 'src/'),
+    "@": join(rootPath,'/src'),  //'${workspaceRoot}'为项目的根目录
   }
 }
 for (let key in mappings) {
