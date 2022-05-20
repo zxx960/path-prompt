@@ -2,9 +2,9 @@
     "name": "path-prompt",
     "displayName": "path prompt",
     "description": "提示路径，图片预览",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "publisher": "zhuxiuxiang",
-    "icon": "",
+    "icon": "icon.png",
     "repository": {
         "type": "git",
         "url": "https://github.com/zxx960/path-prompt"
