@@ -53,7 +53,7 @@ export default class PathConfiguration {
         );
 
         this.data.withExtension = codeConfiguration.get('includeExtension');
-        this.data.withExtensionOnImport = true;
+        this.data.withExtensionOnImport = codeConfiguration.get('extensionOnImport');
         this.data.excludedItems = codeConfiguration.get('excludedItems');
         this.data.pathMappings = codeConfiguration.get('pathMappings');
         this.data.pathSeparators = codeConfiguration.get('pathSeparators');
