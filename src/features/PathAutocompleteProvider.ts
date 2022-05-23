@@ -91,12 +91,11 @@ export class PathAutocomplete implements vs.CompletionItemProvider {
                 completion.kind = vs.CompletionItemKind.File;
                 // 如果是图片就进行预览
                 const images = ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp', '.svg', '.ico']  //支持的图片格式
-                images.forEach(item => {
-                    if (insertText.endsWith(item)) {
-                      let image = `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![image](${vs.Uri.file(file.path)}|width=200)`
-                      completion.documentation = new vs.MarkdownString(image)
-                    }
-                })
+                let suffix = insertText.slice(insertText.lastIndexOf('.')) //获取文件后缀名
+                if(images.includes(suffix)){
+                    let image = `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![image](${vs.Uri.file(file.path)}|width=200)`
+                    completion.documentation = new vs.MarkdownString(image)
+                }
             }
 
             // this is deprecated but still needed for the completion to work
