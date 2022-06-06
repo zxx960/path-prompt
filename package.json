@@ -2,7 +2,7 @@
     "name": "path-prompt",
     "displayName": "path prompt",
     "description": "提示路径，图片预览",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "publisher": "zhuxiuxiang",
     "icon": "icon.png",
     "repository": {
