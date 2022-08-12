@@ -1,7 +1,7 @@
 # path-prompt
 - 自动提示文件路径,图片预览
 
-![演示](https://cdn.jsdelivr.net/gh/zxx960/image-hosting@master/演示.gif)
+![演示](https://git.poker/zxx960/image-hosting/blob/master/demonstrate.24vjl66hkk00.gif?raw=true)
 ## 配置别名路径
 - 到settings.json中配置
 - 例如：
