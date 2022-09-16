@@ -1,7 +1,7 @@
 # path-prompt
 - 自动提示文件路径,图片预览
 
-![演示](./demo/demonstrate.24vjl66hkk00.gif)
+![演示](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7fdaebef91ba49c0845d658c8f615777~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp)
 ## 配置别名路径
 - 到settings.json中配置
 - 例如：
