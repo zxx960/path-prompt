@@ -1,13 +1,13 @@
 # path-prompt
 - 自动提示文件路径,图片预览
 
-![演示](https://git.poker/zxx960/image-hosting/blob/master/demonstrate.24vjl66hkk00.gif?raw=true)
+![演示](./demo/demonstrate.24vjl66hkk00.gif)
 ## 配置别名路径
 - 到settings.json中配置
 - 例如：
 ```javascript
 "path-prompt.pathMappings": {  
-    "@": "${folder}/src", // alias for /test
+    "@": "${folder}/src", 
 },
 ```
 ## import或着require引入图片不能预览
